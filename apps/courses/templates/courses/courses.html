@@ -1,20 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base.html' %}
+{% load static %}
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Devilearn</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" href="./css/styles.css" />
-</head>
+{% block title %} Todos los Cursos {% endblock title %}
 
-<body>
+{% block custom_syles %} 
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+{% endblock custom_syles %}
+
+{% block content %}
+
     <div class="layout">
 
         <div class="sidebar">
             <div class="logo">
-                <img src="./images/devilearn.png" alt="Logo">
+                <img src="{% static 'images/devilearn.png' %}" alt="Logo">
             </div>
             <ul class="menu">
                 <li><a class="menu-option" href="index.html"><i
@@ -57,8 +56,8 @@
                         <div class="course-grid">
                             <!-- Card 1 -->
                             <div class="course-card">
-                                <a href="course_detail.html">
-                                    <img src="./images/curso_1.jpg" alt="Course Image" class="course-img" />
+                                <a href="{% url 'course_detail' %}">
+                                    <img src="{% static 'images/curso_1.jpg' %}" alt="Course Image" class="course-img" />
                                     <div class="course-info">
                                         <div class="course-rating">
                                             <span class="tag beginner">Beginner</span>
@@ -80,8 +79,8 @@
 
                             <!-- Card 2 -->
                             <div class="course-card">
-                                <a href="course_detail.html">
-                                    <img src="./images/curso_2.jpg" alt="Course Image" class="course-img" />
+                                <a href="{% url 'course_detail' %}">
+                                    <img src="{% static 'images/curso_2.jpg' %}" alt="Course Image" class="course-img" />
                                     <div class="course-info">
                                         <div class="course-rating">
                                             <span class="tag beginner">Beginner</span>
@@ -102,8 +101,8 @@
 
                             <!-- Card 3 -->
                             <div class="course-card">
-                                <a href="course_detail.html">
-                                    <img src="./images/curso_3.jpg" alt="Course Image" class="course-img" />
+                                <a href="{% url 'course_detail' %}">
+                                    <img src="{% static 'images/curso_3.jpg' %}" alt="Course Image" class="course-img" />
                                     <div class="course-info">
                                         <div class="course-rating">
                                             <span class="tag beginner">Beginner</span>
@@ -126,8 +125,8 @@
 
                             <!-- Card 4 -->
                             <div class="course-card">
-                                <a href="course_detail.html">
-                                    <img src="./images/curso_4.jpg" alt="Course Image" class="course-img" />
+                                <a href="{% url 'course_detail' %}">
+                                    <img src="{% static 'images/curso_4.jpg' %}" alt="Course Image" class="course-img" />
                                     <div class="course-info">
                                         <div class="course-rating">
                                             <span class="tag beginner">Beginner</span>
@@ -152,8 +151,11 @@
             </main>
         </div>
     </div>
-    <script src="./js/script.js"></script>
+    
+{% endblock content %}
+    
 
-</body>
-
-</html>
+{% block scripts %}
+    <script src="{% static 'js/script.js' %}"></script>
+{% endblock scripts %}
+    
