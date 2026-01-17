@@ -46,7 +46,33 @@ def course_list(request):
     return render(request, 'courses/courses.html', {'courses': courses})
 
 def course_detail(request):
-    return render(request, 'courses/course_detail.html')
+    course = {
+        'course_title': 'Python: fundamentos hasta los detalles',
+        'course_link': 'course_lessons',
+        'course_image': 'images/curso_2.jpg',
+        'info_course': {
+            'lessons': 79,
+            'duration': 8,
+            'instructor': 'Alison Walsh',
+        },
+        'course_content': [
+            {
+                'id': 1,
+                'name': 'Introducción al curso',
+                'lessons': [
+                    {
+                        'name': '¿Qué aprenderás en este curso?',
+                        'type': 'video',
+                    },
+                    {
+                        'name': 'Cóm usar la plataforma',
+                        'type': 'article',
+                    },
+                ]
+            },
+        ]
+    }
+    return render(request, 'courses/course_detail.html', {'course': course})
 
 def course_lessons(request):
     return render(request, 'courses/course_lessons.html')
