@@ -75,4 +75,42 @@ def course_detail(request):
     return render(request, 'courses/course_detail.html', {'course': course})
 
 def course_lessons(request):
-    return render(request, 'courses/course_lessons.html')
+    lessons = {
+        'course_title': 'Django: Crea aplicaciones web robustas con Python',
+        'progress': 30,
+        'course_content': [
+            {
+                'id': 1,
+                'name': 'Introducción al curso',
+                'total_lessons': 6,
+                'completed_lessons': 2,
+                'lessons': [
+                    {
+                        'name': '¿Qué aprenderás en este curso?',
+                        'type': 'video',
+                    },
+                    {
+                        'name': 'Cóm usar la plataforma',
+                        'type': 'article',
+                    },
+                ]
+            },
+            {
+                'id': 2,
+                'name': 'Fundamentos necesarios de Python',
+                'total_lessons': 27,
+                'completed_lessons': 0,
+                'lessons': [
+                    {
+                        'name': 'Variables',
+                        'type': 'video',
+                    },
+                    {
+                        'name': 'Condicionales',
+                        'type': 'video',
+                    },
+                ]
+            },
+        ]
+    }
+    return render(request, 'courses/course_lessons.html', {'lessons': lessons})

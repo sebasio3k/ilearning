@@ -1,23 +1,20 @@
-<!DOCTYPE html>
-<html lang="es">
+{% extends 'base.html' %}
+{% load static %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Curso Django</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+{% block title %} Lecciones de Curso {% endblock title %}
 
-    <link rel="stylesheet" href="./css/lessons.css">
-</head>
+{% block custom_syles %} 
+    <link rel="stylesheet" href="{% static 'css/lessons.css' %}" />
+{% endblock custom_syles %}
 
-<body>
-    <!-- HEADER SUPERIOR -->
+
+{% block content %}
+        <!-- HEADER SUPERIOR -->
     <header class="topbar">
         <div class="acciones">
             <div class="back-link"> <button class="discusiones">← Ve al panel de control</button></div>
-
         </div>
-        <div class="logo"><img src="./images/devilearn.png" alt="Logo devilearn"></div>
+        <div class="logo"><img src="{% static 'images/ilearning_logo.png' %}" alt="Logo devilearn"></div>
     </header>
 
     <!-- LAYOUT PRINCIPAL -->
@@ -26,36 +23,32 @@
         <aside class="sidebar">
 
 
-            <h1 class="course-title">Django: Crea aplicaciones web robustas con Python</h1>
-            <p class="progress">0% completado</p>
+            <h1 class="course-title">{{lessons.course_title}}</h1>
+            <p class="progress">{{lessons.progress}}% completado</p>
 
 
             <input class="lesson-search" placeholder="Buscar...">
             <option>Buscar por título de lección</option>
             </select>
+            sección
 
             <!-- SECCIONES -->
             <div class="accordion">
+                
+                {% for section in lessons.course_content  %}
                 <div class="accordion-item">
-                    <button class="accordion-header">Sección 1: Introducción al curso <span>0 / 6</span></button>
+                    <button class="accordion-header">Sección {{section.id}}: {{section.name}} <span>{{section.completed_lessons}} / {{section.total_lessons}}</span></button>
                     <div class="accordion-content">
                         <ul>
-                            <li>Bienvenida</li>
-                            <li>¿Qué aprenderás?</li>
-                            <li>Requisitos del curso</li>
+                            
+                            {% for lesson in section.lessons %}
+                                <li>{{lesson.name}}</li>
+                            {% endfor %}
                         </ul>
                     </div>
                 </div>
-                <div class="accordion-item">
-                    <button class="accordion-header">Sección 2: Fundamentos necesarios de Python <span>0 /
-                            27</span></button>
-                    <div class="accordion-content">
-                        <ul>
-                            <li>Variables</li>
-                            <li>Condicionales</li>
-                        </ul>
-                    </div>
-                </div>
+                {% endfor %}
+                
                 <!-- Agrega más secciones si deseas -->
             </div>
         </aside>
@@ -75,8 +68,9 @@
             </div>
         </main>
     </div>
+{% endblock content %}
 
-    <script src="./js/multimedia.js"></script>
-</body>
 
-</html>
+{% block scripts %}
+    <script src="{% static 'js/multimedia.js' %}"></script>
+{% endblock scripts %}
