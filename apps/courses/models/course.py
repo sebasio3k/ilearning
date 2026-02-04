@@ -22,6 +22,8 @@ class CourseCategory(models.Model):
     
     class Meta:
         unique_together = ('course', 'category')
+        verbose_name = "Course Category"
+        verbose_name_plural = "Course Categories"
         
     def __str__(self):
         return f"{self.course} - {self.category}"
