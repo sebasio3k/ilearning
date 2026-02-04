@@ -3,6 +3,7 @@ from .module import Module
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.conf import settings
+from ..fields import OrderField
 
 class ItemBase(models.Model):
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='%(class)s_related')
@@ -38,3 +39,5 @@ class Content(models.Model):
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, limit_choices_to={'model__in':('text', 'file', 'image', 'video')})
     object_id = models.PositiveIntegerField()
     item = GenericForeignKey('content_type', 'object_id')
+    order = OrderField(blank=True, for_fields=['module'])
+    
