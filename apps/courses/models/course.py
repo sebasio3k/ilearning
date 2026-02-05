@@ -6,8 +6,13 @@ class Course(models.Model):
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='owned_courses')
     title = models.CharField(max_length=200)
     slug = models.SlugField(unique=True)
+    overview = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     categories = models.ManyToManyField(Category, through='CourseCategory', related_name='courses')
+    image = models.URLField(blank=True, null=True)
+    level = models.CharField(max_length=50, blank=True)
+    rating = models.FloatField(default=0.0)
+    duration = models.FloatField(default=0.0)
     
     class Meta:
         ordering = ['-created_at']
