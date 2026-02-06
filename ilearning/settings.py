@@ -131,3 +131,62 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'profiles.User'
+
+# LOGS CONFIG
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+
+    "formatters": {
+        "simple": {
+            "format": "[{levelname}] {name}: {message}",
+            "style": "{",
+        },
+        "verbose": {
+            "()": "util.logging_utils.LocalTimeFormatter",
+            "format": "[{asctime}] {levelname} {name} ({module}:{lineno}): {message}",
+            "datefmt": "%Y-%m-%d %H:%M:%S",
+            "style": "{",
+        },
+    },
+
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "simple",
+        },
+        "file": {
+            "class": "logging.handlers.TimedRotatingFileHandler",
+            "filename": BASE_DIR / "logs" / "ilearning.log",
+            "when": "midnight",
+            "interval": 1,
+            "backupCount": 7,     # guarda 7 días de logs
+            "encoding": "utf-8",
+            "formatter": "verbose",
+            "level": "INFO",
+        },
+    },
+
+    "loggers": {
+        "django": {
+            "handlers": ["console"],
+            "level": "INFO",
+            "propagate": True,
+        },
+        "courses": {
+            "handlers": ["console", "file"],
+            "level": "DEBUG",
+            "propagate": False,
+        },
+        "dashboard": {
+            "handlers": ["console", "file"],
+            "level": "DEBUG",
+            "propagate": False,
+        },
+        "profiles": {
+            "handlers": ["console", "file"],
+            "level": "DEBUG",
+            "propagate": False,
+        },
+    },
+}
