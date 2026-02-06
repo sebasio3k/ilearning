@@ -173,17 +173,22 @@ LOGGING = {
             "level": "INFO",
             "propagate": True,
         },
-        "courses": {
+        "ilearning": {
             "handlers": ["console", "file"],
             "level": "DEBUG",
             "propagate": False,
         },
-        "dashboard": {
+        "apps.courses": {
             "handlers": ["console", "file"],
             "level": "DEBUG",
             "propagate": False,
         },
-        "profiles": {
+        "apps.dashboard": {
+            "handlers": ["console", "file"],
+            "level": "DEBUG",
+            "propagate": False,
+        },
+        "apps.profiles": {
             "handlers": ["console", "file"],
             "level": "DEBUG",
             "propagate": False,
