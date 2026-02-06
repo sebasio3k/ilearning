@@ -24,27 +24,64 @@
 
                 <div class="carousel-wrapper">
                     <div class="course-grid">
-
-                            {% for course in courses  %}
-                                <div class="course-card">
-                                    <a href="{{course.overview}}">
-                                        <img src="{{course.image}}" alt="Course Image" class="course-img" />
-                                        <div class="course-info">
-                                            <div class="course-rating">
-                                                <span class="tag beginner">{{ course.level }}</span>
-                                                <div class="course-meta">
-                                                    <span><i class="fa-solid fa-star"></i> {{course.rating}}</span>
-                                                </div>
+                        {% for course in courses %}
+                            <div class="course-card">
+                                <a href="{{course.overview}}">
+                                    <img src="{{course.image}}" alt="Course Image" class="course-img" />
+                                    <div class="course-info">
+                                        <div class="course-rating">
+                                            <span class="tag beginner">{{ course.level }}</span>
+                                            <div class="course-meta">
+                                                <span><i class="fa-solid fa-star"></i> {{course.rating}}</span>
                                             </div>
-                                            <h3 class="course-title">{{course.title}}
-                                            </h3>
-                                            <div class="author"><img src="{{course.owner.instructor_profile.photo}}"
-                                                    alt=""><span>{{course.owner.instructor_profile}}</span></div>
                                         </div>
-                                    </a>
-                                </div>
-                            {% endfor %}
-                        
+                                        <h3 class="course-title">{{course.title}}
+                                        </h3>
+                                        <div class="author"><img src="{{course.owner.instructor_profile.photo}}"
+                                                alt=""><span>{{course.owner.instructor_profile}}</span></div>
+                                    </div>
+                                </a>
+                            </div>
+                        {% endfor %}
+                        <div class="paginator">
+                            {# Primera / Anterior #}
+                            {% if courses.has_previous %}
+                                <a href="?page=1&{{query_string}}" aria-label="Primera página">
+                                    <i class="fa-solid fa-angles-left"></i>
+                                </a>
+                                <a href="?page={{courses.previous_page_number}}&{{query_string}}" aria-label="Página anterior">
+                                    <i class="fa-solid fa-angle-left"></i>
+                                </a>
+                            {% else %}
+                                <span class="is-disabled" aria-disabled="true" title="Ya estás en la primera página">
+                                    <i class="fa-solid fa-angles-left"></i>
+                                </span>
+                                <span class="is-disabled" aria-disabled="true" title="Ya estás en la primera página">
+                                    <i class="fa-solid fa-angle-left"></i>
+                                </span>
+                            {% endif %}
+
+                            <span class="pager-info">
+                                Página <strong>{{ courses.number }}</strong> de <strong>{{ courses.paginator.num_pages }}</strong>
+                            </span>
+
+                            {# Siguiente / Última #}
+                            {% if courses.has_next %}
+                                <a href="?page={{courses.next_page_number}}&{{query_string}}" aria-label="Página siguiente">
+                                    <i class="fa-solid fa-angle-right"></i>
+                                </a>
+                                <a href="?page={{courses.paginator.num_pages}}&{{query_string}}" aria-label="Última página">
+                                    <i class="fa-solid fa-angles-right"></i>
+                                </a>
+                            {% else %}
+                                <span class="is-disabled" aria-disabled="true" title="Ya estás en la última página">
+                                    <i class="fa-solid fa-angle-right"></i>
+                                </span>
+                                <span class="is-disabled" aria-disabled="true" title="Ya estás en la última página">
+                                    <i class="fa-solid fa-angles-right"></i>
+                                </span>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
 

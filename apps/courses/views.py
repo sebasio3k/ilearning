@@ -2,6 +2,7 @@ import logging
 from django.shortcuts import render
 from .models import Course
 from django.db.models import Q
+from django.core.paginator import Paginator
 
 # Create your views here.
 logger = logging.getLogger(__name__)
@@ -18,9 +19,24 @@ def course_list(request):
             Q(owner__first_name__icontains=query) |
             Q(owner__last_name__icontains=query)
         )
+        
+    paginator = Paginator(courses, 8)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     
-    return render(request, 'courses/courses.html', {'courses': courses, 'query': query})
-
+    query_params = request.GET.copy()
+    
+    if "page" in query_params:
+        query_params.pop("page")
+    
+    query_string = query_params.urlencode()
+        
+    return render(request, 'courses/courses.html', {
+        'courses': page_obj, 
+        'query': query,
+        'query_string': query_string
+    })
+    
 def course_detail(request):
     course = {
         'course_title': 'Python: fundamentos hasta los detalles',
