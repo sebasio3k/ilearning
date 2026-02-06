@@ -27,8 +27,8 @@
 
                             {% for course in courses  %}
                                 <div class="course-card">
-                                    <a href="{% url 'course_detail' %}">
-                                        <img src="{% static course.course_image %}" alt="Course Image" class="course-img" />
+                                    <a href="{{course.overview}}">
+                                        <img src="{{course.image}}" alt="Course Image" class="course-img" />
                                         <div class="course-info">
                                             <div class="course-rating">
                                                 <span class="tag beginner">{{ course.level }}</span>
@@ -36,10 +36,10 @@
                                                     <span><i class="fa-solid fa-star"></i> {{course.rating}}</span>
                                                 </div>
                                             </div>
-                                            <h3 class="course-title">{{course.course_title}}
+                                            <h3 class="course-title">{{course.title}}
                                             </h3>
-                                            <div class="author"><img src="{{course.instructor_image}}"
-                                                    alt=""><span>{{course.instructor}}</span></div>
+                                            <div class="author"><img src="{{course.owner.instructor_profile.photo}}"
+                                                    alt=""><span>{{course.owner.instructor_profile}}</span></div>
                                         </div>
                                     </a>
                                 </div>
