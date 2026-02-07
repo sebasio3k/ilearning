@@ -1,5 +1,5 @@
 import logging
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .models import Course
 from django.db.models import Q
 from django.core.paginator import Paginator
@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 def course_list(request):
     courses = Course.objects.all()
     
-    query = request.GET.get('query').strip()
+    query = request.GET.get('query')
     if query:
         logger.info(f"Buscando cursos con el query: {query}")
         courses = courses.filter(
@@ -37,36 +37,18 @@ def course_list(request):
         'query_string': query_string
     })
     
-def course_detail(request):
-    course = {
-        'course_title': 'Python: fundamentos hasta los detalles',
-        'course_link': 'course_lessons',
-        'course_image': 'images/curso_2.jpg',
-        'info_course': {
-            'lessons': 79,
-            'duration': 8,
-            'instructor': 'Alison Walsh',
-        },
-        'course_content': [
-            {
-                'id': 1,
-                'name': 'Introducción al curso',
-                'lessons': [
-                    {
-                        'name': '¿Qué aprenderás en este curso?',
-                        'type': 'video',
-                    },
-                    {
-                        'name': 'Cóm usar la plataforma',
-                        'type': 'article',
-                    },
-                ]
-            },
-        ]
-    }
-    return render(request, 'courses/course_detail.html', {'course': course})
+def course_detail(request, slug):
+    course = get_object_or_404(Course, slug=slug)
+    modules = course.modules.prefetch_related('contents')
+    total_contents = sum(module.contents.count() for module in modules)
+    
+    return render(request, 'courses/course_detail.html', {
+        'course': course,
+        'modules': modules,
+        'total_contents': total_contents
+    })
 
-def course_lessons(request):
+def course_lessons(request, slug):
     lessons = {
         'course_title': 'Django: Crea aplicaciones web robustas con Python',
         'progress': 30,
