@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, CreateView
 from ..models import Course
 
@@ -16,10 +17,11 @@ class CourseListView(InstructorRequiredMixin, ListView):
     def get_queryset(self):
         return Course.objects.filter(owner=self.request.user)
     
-class CourseAddView(InstructorRequiredMixin, CreateView):
+class CourseCreateView(InstructorRequiredMixin, CreateView):
     model = Course
-    fields = ['title', 'overview', 'image', 'level', 'duration', 'categories']
-    template_name = 'instructor/course_add.html'
+    fields = ['title', 'overview', 'image', 'level', 'duration', 'categories', 'slug', 'duration']
+    template_name = 'instructor/course_form.html'
+    success_url = reverse_lazy('instructor:course_list')
     
     def form_valid(self, form):
         form.instance.owner = self.request.user
