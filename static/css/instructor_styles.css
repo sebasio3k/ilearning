@@ -87,6 +87,22 @@ form button {
     text-align: center;
 }
 
+form .btn {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    text-decoration: none;
+    /* importante para <a> */
+    border: none;
+    cursor: pointer;
+}
+
+/* separacion entre botones */
+form .btn+.btn {
+    margin-top: 12px;
+}
 
 .btn {
     padding: 10px;
