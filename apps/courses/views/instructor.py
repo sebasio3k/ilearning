@@ -65,3 +65,18 @@ class ModuleListView(InstructorRequiredMixin, ListView):
         context['course'] = self.course
         return context
     
+class ModuleCreateView(InstructorRequiredMixin, CreateView):
+    model = Module
+    fields = ['title', 'description']
+    template_name = 'instructor/module_form.html'
+    
+    def get_success_url(self):
+        return reverse('instructor:module_list', args=[self.kwargs['course_pk']])
+    
+    def form_valid(self, form):
+        form.instance.course = get_object_or_404(
+            Course, 
+            pk=self.kwargs['course_pk'], 
+            owner=self.request.user
+        )
+        return super().form_valid(form)

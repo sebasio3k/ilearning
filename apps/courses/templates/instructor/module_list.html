@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}Mis cursos{% endblock title %}
+{% block title %}Mis Módulos{% endblock title %}
 
 {% block custom_styles %}
 <link rel="stylesheet" href="{% static 'css/styles.css'%}">
@@ -17,7 +17,7 @@
 
                 <h2 class="form-title">Módulos de {{course.title}}</h2>
                 <div class="add-new-course">
-                    <a href="">Agregar módulo</a>
+                    <a href="{% url 'instructor:module_create' course_pk=course.id %}">Agregar módulo</a>
                 </div>
 
                 <ul class="drag-list" id="module-list">
