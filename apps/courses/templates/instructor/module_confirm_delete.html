@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}Crear/Editar curso{% endblock title %}
+{% block title %}Elimnar Modulo{% endblock title %}
 {% load static %}
 
 {% block custom_styles %}
@@ -15,12 +15,12 @@
         {% include 'includes/header_instructor.html' %}
 
         <main>
-            <h2 class="form-title">¿Estás seguro/a que quieres elimnar el Curso "{{object.title}}"?</h2>
+            <h2 class="form-title">¿Estás seguro/a que quieres elimnar el módulo "{{object.title}}"?</h2>
             <form method='post'>
                 {% csrf_token %}
                 <button class="btn btn-danger" type='submit'>Sí, elimnar</button>
                 
-                <a class="btn btn-cancel" href="{% url 'instructor:course_list' %}">Cancelar</a>
+                <a class="btn btn-cancel" href="{% url 'instructor:module_list' course_pk=object.course.id %}">Cancelar</a>
             </form>
 
         </main>
