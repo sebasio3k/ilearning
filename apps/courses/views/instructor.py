@@ -1,8 +1,18 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse, reverse_lazy
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
-from ..models import Course, Module, Content
-from django.shortcuts import get_object_or_404
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView, View
+from ..models import Course, Module, Content, Text, File, Image, Video
+from django.shortcuts import get_object_or_404, redirect, render
+from django.forms import modelform_factory
+from django.contrib.contenttypes.models import ContentType
+from django.http import HttpResponseForbidden
+
+CONTENT_MODELS= {
+    'text': Text,
+    'file': File,
+    'image': Image,
+    'video': Video
+}
 
 class InstructorRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
     
@@ -120,3 +130,53 @@ class ContentListView(InstructorRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         context['module'] = self.module
         return context
+
+class ContentCreateUpdateView(InstructorRequiredMixin, View):
+    template_name = 'instructor/content_form.html'
+    
+    def get_model(self, model_name):
+        return CONTENT_MODELS.get(model_name, None)
+    
+    def get_form(self, model, *args, **kwargs):
+        Form = modelform_factory(model, exclude=['owner', 'created_at', 'updated_at'])
+        return Form(*args, **kwargs)
+
+    def dispatch(self, request, module_pk=None, model_name=None, pk=None, *args, **kwargs):
+        self.module = get_object_or_404(
+            Module, 
+            pk=module_pk, 
+            course__owner=request.user
+        )
+        self.model = self.get_model(model_name)
+        self.object = None
+        
+        if pk:
+            try:
+                content = Content.objects.select_related('content_type').get(
+                    object_id=pk,
+                    content_type=ContentType.objects.get_for_model(self.model),
+                    module=self.module
+                )
+                self.object = content.item
+            except Content.DoesNotExist:
+                return HttpResponseForbidden('Dont have permission to edit this content, or content does not exist')
+        
+        return super().dispatch(request, module_pk, model_name, pk, *args, **kwargs)    
+
+    def get(self, request, module_pk, model_name, pk=None):
+        form = self.get_form(self.model, instance=self.object)
+        return render(request, self.template_name, {'form': form, 'object': self.object})
+    
+    def post(self, request, module_pk, model_name, pk=None):
+        form = self.get_form(self.model, data=request.POST, files=request.FILES, instance=self.object)
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.owner = request.user
+            obj.save()
+            if not pk:
+                Content.objects.create(
+                    module=self.module,
+                    item=obj
+                )
+            return redirect('instructor:content_list', module_pk=self.module.pk)
+        return render(request, self.template_name, {'form': form, 'object': self.object})
