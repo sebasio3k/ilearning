@@ -80,3 +80,14 @@ class ModuleCreateView(InstructorRequiredMixin, CreateView):
             owner=self.request.user
         )
         return super().form_valid(form)
+    
+class ModuleUpdateView(InstructorRequiredMixin, UpdateView):
+    model = Module
+    fields = ['title', 'description']
+    template_name = 'instructor/module_form.html'
+    
+    def get_success_url(self):
+        return reverse('instructor:module_list', args=[self.object.course.pk])
+    
+    def get_queryset(self):
+        return Module.objects.filter(course__owner=self.request.user)
