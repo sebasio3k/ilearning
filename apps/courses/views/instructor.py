@@ -180,3 +180,13 @@ class ContentCreateUpdateView(InstructorRequiredMixin, View):
                 )
             return redirect('instructor:content_list', module_pk=self.module.pk)
         return render(request, self.template_name, {'form': form, 'object': self.object})
+
+class ContentDeleteView(InstructorRequiredMixin, DeleteView):
+    model = Content
+    template_name = 'instructor/content_confirm_delete.html'
+    
+    def get_queryset(self):
+        return Content.objects.filter(module__course__owner=self.request.user)
+    
+    def get_success_url(self):
+        return reverse('instructor:content_list', args=[self.object.module.pk])

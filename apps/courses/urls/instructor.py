@@ -17,4 +17,5 @@ urlpatterns = [
     path('module/<int:module_pk>/contents', instructor.ContentListView.as_view(), name='content_list'),
     path('module/<int:module_pk>/content/<model_name>/add', instructor.ContentCreateUpdateView.as_view(), name='content_create'),
     path('module/<int:module_pk>/content/<int:pk>/<model_name>/edit', instructor.ContentCreateUpdateView.as_view(), name='content_edit'),
+    path('content/<int:pk>/delete', instructor.ContentDeleteView.as_view(), name='content_delete'),
 ]
