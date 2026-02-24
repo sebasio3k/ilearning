@@ -26,7 +26,7 @@
                         <li class="drag-item" data-id={{module.id}}>
                             <strong>{{module.title}}</strong>
                             <div class="actions">
-                                <a href=""><i class="fa-solid fa-eye"></i>Ver contenido</a>
+                                <a href="{% url 'instructor:content_list' module_pk=module.id %}"><i class="fa-solid fa-eye"></i>Ver contenido</a>
                                 <a href="{% url 'instructor:module_edit' pk=module.id %}"><i class="fa-solid fa-pen-to-square"></i></a>
                                 <a href="{% url 'instructor:module_delete' pk=module.id %}"><i class="fa-solid fa-trash"></i></a>
                             </div>

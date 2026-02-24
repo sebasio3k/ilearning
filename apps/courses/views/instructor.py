@@ -1,7 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
-from ..models import Course, Module
+from ..models import Course, Module, Content
 from django.shortcuts import get_object_or_404
 
 class InstructorRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
@@ -101,3 +101,22 @@ class ModuleDeleteView(InstructorRequiredMixin, DeleteView):
     
     def get_queryset(self):
         return Module.objects.filter(course__owner=self.request.user)
+    
+# Content views
+class ContentListView(InstructorRequiredMixin, ListView):
+    model = Content
+    template_name = 'instructor/content_list.html'
+    context_object_name = 'contents'
+    
+    def get_queryset(self):
+        self.module = get_object_or_404(
+            Module, 
+            pk=self.kwargs['module_pk'], 
+            course__owner=self.request.user
+        )
+        return self.module.contents.all().select_related('content_type').order_by('order')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['module'] = self.module
+        return context
